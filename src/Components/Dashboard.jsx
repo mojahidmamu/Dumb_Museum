@@ -29,8 +29,8 @@ import {
             .sort((a, b) => b.views - a.views)
             .slice(0, 6)
             .map((p) => ({
-            name: p.name,
-            views: p.views,
+                name: p.name,
+                views: p.views,
             }));
 
         const pieData = [
@@ -58,15 +58,15 @@ import {
                 </div>
                 <div className="stat-title">Wanted Items</div>
                 <div className="stat-value text-success">{wantedCount}</div>
-                </div>
-                <div className="stat bg-base-200 rounded-box">
+            </div>
+            <div className="stat bg-base-200 rounded-box">
                 <div className="stat-figure text-error">
                     <ThumbsDown size={28} />
                 </div>
                 <div className="stat-title">Unwanted Items</div>
                 <div className="stat-value text-error">{unwantedCount}</div>
-                </div>
-                <div className="stat bg-base-200 rounded-box">
+            </div>
+            <div className="stat bg-base-200 rounded-box">
                 <div className="stat-figure text-primary">
                     <Eye size={28} />
                 </div>
@@ -84,7 +84,7 @@ import {
                 <CartesianGrid strokeDasharray="3 3" opacity={0.4} />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis
-                    tick={{ fontSize: 11 }}
+                    tick={{ fontSize: 16 }}
                     tickFormatter={(v) =>
                     new Intl.NumberFormat("en", { notation: "compact" }).format(v)
                     }
