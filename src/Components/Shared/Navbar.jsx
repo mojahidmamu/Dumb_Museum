@@ -1,89 +1,116 @@
-    import React from 'react';
+    import React, { useEffect, useState } from "react";
     import { Menu, Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-
-
-const Links = (
-  <>
-    <Link to={"/"}>Home</Link>
-    <Link to={"/"}>Collection</Link>
-    <Link to={"/"}>Submit</Link>
-  </>
-);
+    import { Link, NavLink } from "react-router";
 
     const Navbar = () => {
+    const [theme, setTheme] = useState("caramellatte");
 
-        const [theme, setTheme] = useState("caramellatte");
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme") || "caramellatte";
+        // setTheme(savedTheme);
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    }, []);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "caramellatte";
-    // setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  }, []);
+    const toggleTheme = () => {
+        const nextTheme = theme === "dracula" ? "caramellatte" : "dracula";
+        setTheme(nextTheme);
+        localStorage.setItem("theme", nextTheme);
+        document.documentElement.setAttribute("data-theme", nextTheme);
+    };
 
-  const toggleTheme = () => {
-    const nextTheme = theme === "dracula" ? "caramellatte" : "dracula";
-    setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
-    document.documentElement.setAttribute("data-theme", nextTheme);
-  };
+    const navLinks = (
+        <>
+        {["Home", "Collection", "Submit"].map((item, index) => (
+            <li key={index}>
+            <NavLink
+                to={"/"}
+                className={({ isActive }) =>
+                `px-3 py-1 rounded-lg transition-all duration-300 
+                hover:bg-primary hover:text-white 
+                ${
+                    isActive
+                    ? "bg-primary text-white shadow-md"
+                    : "text-base-content"
+                }`
+                }
+            >
+                {item}
+            </NavLink>
+            </li>
+        ))}
+        </>
+    );
 
-        return (
-            <div className="navbar shadow-sm px-6">
-        <h1 className="md:text-2xl text-xl font-bold navbar-start font-newsreader">
-            Dumb <span className="italic text-primary ml-1"> Museum</span>
-        </h1>
+    return (
+        <div className="navbar bg-base-100 shadow-md px-6 sticky top-0 z-50">
 
-        <ul className="text-lg navbar-center space-x-2.5 cursor-pointer [&_li]:hover:underline hidden lg:flex uppercase font-bold">
-            {Links}
-        </ul>
+        {/* LEFT */}
+        <div className="navbar-start">
+            <h1 className="md:text-2xl text-xl font-bold font-newsreader tracking-wide">
+            Dumb <span className="italic text-primary">Museum</span>
+            </h1>
+        </div>
 
-        <div className="navbar-end">
+        {/* CENTER (Desktop Menu) */}
+        <div className="navbar-center hidden lg:flex">
+            <ul className="menu menu-horizontal gap-2 font-semibold uppercase">
+            {navLinks}
+            </ul>
+        </div>
+
+        {/* RIGHT */}
+        <div className="navbar-end flex items-center gap-2">
+
+            {/* Theme Toggle */}
             <button
             onClick={toggleTheme}
-            className="btn btn-ghost btn-circle mr-2"
-            aria-label="Toggle theme"
-            title="Toggle theme"
+            className="btn btn-ghost btn-circle hover:bg-primary hover:text-white transition"
             >
             {theme === "dracula" ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
+            {/* Avatar Dropdown */}
             <div className="dropdown dropdown-end">
-            <div tabIndex={0} className="avatar cursor-pointer">
-                <div className="w-10 rounded-md">
+            <div
+                tabIndex={0}
+                className="avatar cursor-pointer hover:scale-105 transition"
+            >
+                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                 <img
-                    className="object-top"
                     alt="User"
                     src="https://ucarecdn.com/22571163-5ede-4931-92dd-723a34404fc2/download.png"
                 />
                 </div>
             </div>
+
             <ul
-                tabIndex={-1}
-                className="menu dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                tabIndex={0}
+                className="menu dropdown-content mt-3 w-52 p-2 shadow bg-base-200 rounded-box"
             >
                 <li>
-                <Link to={"/dashboard"} className="justify-between">
+                <Link to={"/dashboard"} className="flex justify-between">
                     Dashboard
-                    <span className="badge">New</span>
+                    <span className="badge badge-primary">New</span>
                 </Link>
                 </li>
             </ul>
             </div>
 
-            <div className="dropdown dropdown-end block lg:hidden ml-1">
-            <Menu tabIndex={0} className="btn btn-ghost btn-square size-6" />
+            {/* Mobile Menu */}
+            <div className="dropdown dropdown-end lg:hidden">
+            <label tabIndex={0} className="btn btn-ghost btn-square">
+                <Menu size={20} />
+            </label>
             <ul
-                tabIndex={-1}
-                className="menu dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                tabIndex={0}
+                className="menu dropdown-content mt-3 w-52 p-2 shadow bg-base-200 rounded-box"
             >
-                {Links}
+                {navLinks}
             </ul>
             </div>
         </div>
         </div>
-        );
+    );
     };
 
     export default Navbar;
