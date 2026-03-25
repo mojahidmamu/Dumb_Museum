@@ -36,11 +36,7 @@ import {
         const pieData = [
             { name: "Wanted", value: wantedCount, fill: "var(--color-success)" },
             { name: "Unwanted", value: unwantedCount, fill: "var(--color-error)" },
-            {
-            name: "Neutral",
-            value: products.length - wantedCount - unwantedCount,
-            fill: "var(--color-primary)",
-            },
+            { name: "Neutral", value: products.length - wantedCount - unwantedCount,   fill: "var(--color-primary)",},
         ].filter((d) => d.value > 0);
 
 
